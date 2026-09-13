@@ -25,6 +25,10 @@ Result checkRow(GameMatrix game) {
 }
 
 int CheckGame(GameMatrix game) {
+  if (game[0][0] == 1 && game[1][1] == 1 && game[2][2] == 1) {
+    return 1;
+  }
+
   Result result = checkCollumn(game);
   if (result == Result::VICTORY_O || result == Result::VICTORY_X) return result;
 
