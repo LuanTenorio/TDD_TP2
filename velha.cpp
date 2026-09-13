@@ -22,8 +22,10 @@ int VerificaVelha(int velha[3][3]) {
       return player;
   }
 
-  if (velha[0][0] == 1 && velha[0][1] == 1 && velha[0][2] == 1)
-    return VICTORY_X;
+  for (int i = 0; i < 3; i++) {
+    if (velha[i][0] == 1 && velha[i][1] == 1 && velha[i][2] == 1) return 1;
+    if (velha[i][0] == 2 && velha[i][1] == 2 && velha[i][2] == 2) return 2;
+  }
 
   return 0;
 }
