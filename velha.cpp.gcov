@@ -1,0 +1,120 @@
+        -:    0:Source:velha.cpp
+        -:    1:#include "velha.hpp"
+        -:    2:
+        -:    3:#include <cstdlib>
+        -:    4:
+       20:    5:Result checkCollumn(GameMatrix game) {
+        -:    6:  int player;
+       76:    7:  for (int collumn = 0; collumn < 3; ++collumn) {
+       58:    8:    player = game[0][collumn];
+        -:    9:
+       58:   10:    if (player != 0 && game[1][collumn] == player && game[2][collumn] == player)
+        2:   11:      return static_cast<Result>(player);
+        -:   12:  }
+        -:   13:
+       18:   14:  return Result::INDEFINITE;
+        -:   15:}
+        -:   16:
+       18:   17:Result checkRow(GameMatrix game) {
+        -:   18:  int player;
+       61:   19:  for (int row = 0; row < 3; ++row) {
+       47:   20:    player = game[row][0];
+        -:   21:
+       47:   22:    if (player != 0 && game[row][1] == player && game[row][2] == player)
+        4:   23:      return static_cast<Result>(player);
+        -:   24:  }
+        -:   25:
+       14:   26:  return Result::INDEFINITE;
+        -:   27:}
+        -:   28:
+       14:   29:Result checkLeftDiagonal(GameMatrix game) {
+       14:   30:  int player = game[0][0];
+        -:   31:
+       14:   32:  if (player == Fields::Empty) return Result::INDEFINITE;
+        -:   33:
+       10:   34:  for (int i = 0; i < 2; i++)
+        8:   35:    if (game[i][i] != game[i + 1][i + 1]) return Result::INDEFINITE;
+        -:   36:
+        2:   37:  return static_cast<Result>(player);
+        -:   38:}
+        -:   39:
+       12:   40:Result checkRightDiagonal(GameMatrix game) {
+       12:   41:  int player = game[0][2];
+        -:   42:
+       12:   43:  if (player == Fields::Empty) return Result::INDEFINITE;
+        -:   44:
+        9:   45:  for (int i = 0; i < 2; i++)
+        7:   46:    if (game[i][2 - i] != game[i + 1][2 - (i + 1)]) return Result::INDEFINITE;
+        -:   47:
+        2:   48:  return static_cast<Result>(player);
+        -:   49:}
+        -:   50:
+       77:   51:bool checkIfResultIsWin(Result result) {
+       77:   52:  return result == Result::VICTORY_O || result == Result::VICTORY_X;
+        -:   53:}
+        -:   54:
+       14:   55:Result checkDiagonal(GameMatrix game) {
+       14:   56:  Result result = checkLeftDiagonal(game);
+       14:   57:  if (checkIfResultIsWin(result)) return result;
+        -:   58:
+       12:   59:  return checkRightDiagonal(game);
+        -:   60:}
+        -:   61:
+       20:   62:Result checkWin(GameMatrix game) {
+       20:   63:  Result result = checkCollumn(game);
+       20:   64:  if (checkIfResultIsWin(result)) return result;
+        -:   65:
+       18:   66:  result = checkRow(game);
+       18:   67:  if (checkIfResultIsWin(result)) return result;
+        -:   68:
+       14:   69:  result = checkDiagonal(game);
+       14:   70:  if (checkIfResultIsWin(result)) return result;
+        -:   71:
+       10:   72:  return Result::INDEFINITE;
+        -:   73:}
+        -:   74:
+        2:   75:bool checkDraw(GameMatrix game) {
+        5:   76:  for (int i = 0; i < 3; i++)
+       14:   77:    for (int j = 0; j < 3; j++)
+       11:   78:      if (game[i][j] == Fields::Empty) return false;
+        -:   79:
+        1:   80:  return true;
+        -:   81:}
+        -:   82:
+       17:   83:bool checkImpossible(GameMatrix game) {
+       17:   84:  int len[3] = {0, 0, 0};  // Empty, X, O
+        -:   85:
+       68:   86:  for (int i = 0; i < 3; i++)
+      204:   87:    for (int j = 0; j < 3; j++) len[game[i][j]]++;
+        -:   88:
+       17:   89:  return abs(len[Fields::FIELD_X] - len[Fields::FIELD_O]) >= 2;
+        -:   90:}
+        -:   91:
+        9:   92:bool checkTwoWinners(GameMatrix game, Result firstWinner) {
+        9:   93:  GameMatrix gameX = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+        9:   94:  GameMatrix gameO = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+        -:   95:
+       36:   96:  for (int i = 0; i < 3; i++)
+      108:   97:    for (int j = 0; j < 3; j++)
+       81:   98:      if (game[i][j] == Fields::FIELD_X)
+       27:   99:        gameX[i][j] = Fields::FIELD_X;
+       54:  100:      else if (game[i][j] == Fields::FIELD_O)
+       27:  101:        gameO[i][j] = Fields::FIELD_O;
+        -:  102:
+        4:  103:  return (firstWinner == Result::VICTORY_X &&
+       18:  104:          checkWin(gameO) == Result::VICTORY_O) ||
+        5:  105:         (firstWinner == Result::VICTORY_O &&
+       14:  106:          checkWin(gameX) == Result::VICTORY_X);
+        -:  107:}
+        -:  108:
+       17:  109:Result CheckGame(GameMatrix game) {
+       17:  110:  if (checkImpossible(game)) return Result::IMPOSSIBLE;
+        -:  111:
+       11:  112:  Result result = checkWin(game);
+       11:  113:  if (checkIfResultIsWin(result))
+        9:  114:    return checkTwoWinners(game, result) ? Result::IMPOSSIBLE : result;
+        -:  115:
+        2:  116:  if (checkDraw(game)) return Result::DRAW;
+        -:  117:
+        1:  118:  return Result::INDEFINITE;
+        -:  119:}

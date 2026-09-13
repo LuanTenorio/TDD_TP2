@@ -90,8 +90,8 @@ bool checkImpossible(GameMatrix game) {
 }
 
 bool checkTwoWinners(GameMatrix game, Result firstWinner) {
-  GameMatrix gameX = {};
-  GameMatrix gameO = {};
+  GameMatrix gameX = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+  GameMatrix gameO = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
 
   for (int i = 0; i < 3; i++)
     for (int j = 0; j < 3; j++)
