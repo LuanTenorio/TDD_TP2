@@ -63,3 +63,17 @@ TEST_CASE("Empate", "[velha]") {
 
   REQUIRE(CheckGame(game) == Result::DRAW);
 }
+
+TEST_CASE("Impossível", "[velha]") {
+  SECTION("Mais X que o permitido com o jogo completo") {
+    GameMatrix game = {{1, 2, 1}, {2, 1, 1}, {1, 1, 2}};
+
+    REQUIRE(CheckGame(game) == Result::IMPOSSIBLE);
+  }
+
+  SECTION("Mais O que o permitido com o jogo completo") {
+    GameMatrix game = {{2, 1, 2}, {1, 2, 2}, {2, 2, 1}};
+
+    REQUIRE(CheckGame(game) == Result::IMPOSSIBLE);
+  }
+}
