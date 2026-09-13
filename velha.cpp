@@ -1,5 +1,7 @@
 #include "velha.hpp"
 
+#include <cstdlib>
+
 Result checkCollumn(GameMatrix game) {
   int player;
   for (int collumn = 0; collumn < 3; ++collumn) {
@@ -69,17 +71,32 @@ Result checkWin(GameMatrix game) {
 Result checkDraw(GameMatrix game) {
   for (int i = 0; i < 3; i++)
     for (int j = 0; j < 3; j++)
-      if (game[i][j] == 0) Result::INDEFINITE;
+      if (game[i][j] == Fields::Empty) return Result::INDEFINITE;
 
   return Result::DRAW;
 }
 
 Result CheckGame(GameMatrix game) {
+  int lenX = 0, lenO = 0, lenEmpty = 0;
+
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+      if (game[i][j] == Fields::FIELD_O)
+        lenO++;
+      else if (game[i][j] == Fields::FIELD_X)
+        lenX++;
+      else if (game[i][j] == Fields::Empty)
+        lenEmpty++;
+    }
+  }
+
+  if (abs(lenX - lenO) >= 2) return Result::IMPOSSIBLE;
+
   if (Result result = checkWin(game);
       result == Result::VICTORY_O || result == Result::VICTORY_X)
     return result;
 
   if (checkDraw(game) == Result::DRAW) return Result::DRAW;
 
-  return Result::IMPOSSIBLE;
+  return Result::INDEFINITE;
 }
