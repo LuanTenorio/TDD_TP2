@@ -76,4 +76,28 @@ TEST_CASE("Impossível", "[velha]") {
 
     REQUIRE(CheckGame(game) == Result::IMPOSSIBLE);
   }
+
+  SECTION("Mais X que o permitido com o jogo incompleto") {
+    GameMatrix game = {{1, 0, 1}, {2, 0, 1}, {1, 1, 2}};
+
+    REQUIRE(CheckGame(game) == Result::IMPOSSIBLE);
+  }
+
+  SECTION("Mais O que o permitido com o jogo incompleto") {
+    GameMatrix game = {{2, 0, 2}, {1, 0, 2}, {2, 2, 1}};
+
+    REQUIRE(CheckGame(game) == Result::IMPOSSIBLE);
+  }
+
+  SECTION("Mais X que o permitido com o jogo no começo") {
+    GameMatrix game = {{1, 0, 1}, {1, 0, 0}, {0, 2, 0}};
+
+    REQUIRE(CheckGame(game) == Result::IMPOSSIBLE);
+  }
+
+  SECTION("Mais O que o permitido com o jogo no começo") {
+    GameMatrix game = {{2, 0, 0}, {0, 0, 0}, {2, 0, 0}};
+
+    REQUIRE(CheckGame(game) == Result::IMPOSSIBLE);
+  }
 }
