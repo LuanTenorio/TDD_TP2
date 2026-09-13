@@ -53,7 +53,7 @@ Result checkDiagonal(GameMatrix game) {
   return checkRightDiagonal(game);
 }
 
-int CheckGame(GameMatrix game) {
+Result checkWin(GameMatrix game) {
   Result result = checkCollumn(game);
   if (result == Result::VICTORY_O || result == Result::VICTORY_X) return result;
 
@@ -63,13 +63,23 @@ int CheckGame(GameMatrix game) {
   result = checkDiagonal(game);
   if (result == Result::VICTORY_O || result == Result::VICTORY_X) return result;
 
-  bool isRoom = false;
+  return Result::INDEFINITE;
+}
 
-  for (int i = 0; i < 3 && !isRoom; i++)
+Result checkDraw(GameMatrix game) {
+  for (int i = 0; i < 3; i++)
     for (int j = 0; j < 3; j++)
-      if (game[i][j] == 0) isRoom = true;
+      if (game[i][j] == 0) Result::INDEFINITE;
 
-  if (!isRoom) return Result::DRAW;
+  return Result::DRAW;
+}
 
-  return -3;
+Result CheckGame(GameMatrix game) {
+  if (Result result = checkWin(game);
+      result == Result::VICTORY_O || result == Result::VICTORY_X)
+    return result;
+
+  if (checkDraw(game) == Result::DRAW) return Result::DRAW;
+
+  return Result::IMPOSSIBLE;
 }

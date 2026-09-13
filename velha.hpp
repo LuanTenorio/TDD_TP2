@@ -14,6 +14,6 @@ enum Fields { FIELD_O = 2, FIELD_X = 1, Empty = 0 };
 
 using GameMatrix = int[3][3];
 
-int CheckGame(int velha[3][3]);
+Result CheckGame(int velha[3][3]);
 
 #endif  // VELHA_HPP_
