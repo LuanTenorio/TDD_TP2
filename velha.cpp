@@ -24,22 +24,33 @@ Result checkRow(GameMatrix game) {
   return Result::INDEFINITE;
 }
 
+Result checkLeftDiagonal(GameMatrix game) {
+  int player = game[0][0];
+
+  if (player == Fields::Empty) return Result::INDEFINITE;
+
+  for (int i = 0; i < 2; i++)
+    if (game[i][i] != game[i + 1][i + 1]) return Result::INDEFINITE;
+
+  return static_cast<Result>(player);
+}
+
+Result checkRightDiagonal(GameMatrix game) {
+  int player = game[0][2];
+
+  if (player == Fields::Empty) return Result::INDEFINITE;
+
+  for (int i = 0; i < 2; i++)
+    if (game[i][2 - i] != game[i + 1][2 - (i + 1)]) return Result::INDEFINITE;
+
+  return static_cast<Result>(player);
+}
+
 Result checkDiagonal(GameMatrix game) {
-  if ((game[0][0] == Fields::FIELD_X && game[1][1] == Fields::FIELD_X &&
-       game[2][2] == Fields::FIELD_X) ||
-      (game[0][2] == Fields::FIELD_X && game[1][1] == Fields::FIELD_X &&
-       game[2][0] == Fields::FIELD_X)) {
-    return Result::VICTORY_X;
-  }
+  Result result = checkLeftDiagonal(game);
+  if (result == Result::VICTORY_O || result == Result::VICTORY_X) return result;
 
-  if ((game[0][0] == Fields::FIELD_O && game[1][1] == Fields::FIELD_O &&
-       game[2][2] == Fields::FIELD_O) ||
-      (game[0][2] == Fields::FIELD_O && game[1][1] == Fields::FIELD_O &&
-       game[2][0] == Fields::FIELD_O)) {
-    return Result::VICTORY_O;
-  }
-
-  return Result::INDEFINITE;
+  return checkRightDiagonal(game);
 }
 
 int CheckGame(GameMatrix game) {
