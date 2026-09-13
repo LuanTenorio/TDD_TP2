@@ -68,24 +68,21 @@ Result checkWin(GameMatrix game) {
   return Result::INDEFINITE;
 }
 
-Result checkDraw(GameMatrix game) {
+bool checkDraw(GameMatrix game) {
   for (int i = 0; i < 3; i++)
     for (int j = 0; j < 3; j++)
-      if (game[i][j] == Fields::Empty) return Result::INDEFINITE;
+      if (game[i][j] == Fields::Empty) return false;
 
-  return Result::DRAW;
+  return true;
 }
 
-Result checkImpossible(GameMatrix game) {
+bool checkImpossible(GameMatrix game) {
   int len[3] = {0, 0, 0};  // Empty, X, O
 
   for (int i = 0; i < 3; i++)
     for (int j = 0; j < 3; j++) len[game[i][j]]++;
 
-  if (abs(len[Fields::FIELD_X] - len[Fields::FIELD_O]) >= 2)
-    return Result::IMPOSSIBLE;
-
-  return Result::INDEFINITE;
+  return abs(len[Fields::FIELD_X] - len[Fields::FIELD_O]) >= 2;
 }
 
 bool checkTwoWinners(GameMatrix game, Result firstWinner) {
@@ -106,14 +103,13 @@ bool checkTwoWinners(GameMatrix game, Result firstWinner) {
 }
 
 Result CheckGame(GameMatrix game) {
-  Result result = checkImpossible(game);
-  if (result == Result::IMPOSSIBLE) return result;
+  if (checkImpossible(game)) return Result::IMPOSSIBLE;
 
-  result = checkWin(game);
+  Result result = checkWin(game);
   if (result == Result::VICTORY_O || result == Result::VICTORY_X)
     return checkTwoWinners(game, result) ? Result::IMPOSSIBLE : result;
 
-  if (checkDraw(game) == Result::DRAW) return Result::DRAW;
+  if (checkDraw(game)) return Result::DRAW;
 
   return Result::INDEFINITE;
 }
