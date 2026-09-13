@@ -32,6 +32,13 @@ Result checkDiagonal(GameMatrix game) {
     return Result::VICTORY_X;
   }
 
+  if ((game[0][0] == Fields::FIELD_O && game[1][1] == Fields::FIELD_O &&
+       game[2][2] == Fields::FIELD_O) ||
+      (game[0][2] == Fields::FIELD_O && game[1][1] == Fields::FIELD_O &&
+       game[2][0] == Fields::FIELD_O)) {
+    return Result::VICTORY_O;
+  }
+
   return Result::INDEFINITE;
 }
 
@@ -43,7 +50,7 @@ int CheckGame(GameMatrix game) {
   if (result == Result::VICTORY_O || result == Result::VICTORY_X) return result;
 
   result = checkDiagonal(game);
-  if (result == Result::VICTORY_X) return result;
+  if (result == Result::VICTORY_O || result == Result::VICTORY_X) return result;
 
   return 0;
 }
