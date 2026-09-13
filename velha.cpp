@@ -17,7 +17,7 @@ Result checkCollumn(GameMatrix game) {
 Result checkRow(GameMatrix game) {
   int player;
   for (int row = 0; row < 3; ++row) {
-    player = game[0][row];
+    player = game[row][0];
 
     if (player != 0 && game[row][1] == player && game[row][2] == player)
       return static_cast<Result>(player);
@@ -93,7 +93,26 @@ Result CheckGame(GameMatrix game) {
   if (result == Result::IMPOSSIBLE) return result;
 
   result = checkWin(game);
-  if (result == Result::VICTORY_O || result == Result::VICTORY_X) return result;
+  if (result == Result::VICTORY_O || result == Result::VICTORY_X) {
+    GameMatrix gameX = {};
+    GameMatrix gameO = {};
+
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 3; j++) {
+        if (game[i][j] == Fields::FIELD_X) {
+          gameX[i][j] = Fields::FIELD_X;
+        } else if (game[i][j] == Fields::FIELD_O) {
+          gameO[i][j] = Fields::FIELD_O;
+        }
+      }
+    }
+
+    if ((result == Result::VICTORY_X && checkWin(gameO) == Result::VICTORY_O) ||
+        (result == Result::VICTORY_O && checkWin(gameX) == Result::VICTORY_X))
+      return Result::IMPOSSIBLE;
+
+    return result;
+  }
 
   if (checkDraw(game) == Result::DRAW) return Result::DRAW;
 
