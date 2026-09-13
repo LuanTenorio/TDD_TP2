@@ -63,5 +63,13 @@ int CheckGame(GameMatrix game) {
   result = checkDiagonal(game);
   if (result == Result::VICTORY_O || result == Result::VICTORY_X) return result;
 
+  bool isRoom = false;
+
+  for (int i = 0; i < 3 && !isRoom; i++)
+    for (int j = 0; j < 3; j++)
+      if (game[i][j] == 0) isRoom = true;
+
+  if (!isRoom) return Result::DRAW;
+
   return -3;
 }
