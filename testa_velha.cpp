@@ -33,15 +33,27 @@ TEST_CASE("Vitória", "[velha]") {
     REQUIRE(CheckGame(game) == VICTORY_O);
   }
 
-  SECTION("Vitória do jogador X diagonal horário") {
+  SECTION("Vitória do jogador X diagonal horária") {
     GameMatrix game = {{1, 0, 0}, {0, 1, 2}, {2, 2, 1}};
 
     REQUIRE(CheckGame(game) == VICTORY_X);
   }
 
-  SECTION("Vitória do jogador X diagonal anti-horário") {
+  SECTION("Vitória do jogador X diagonal anti-horária") {
     GameMatrix game = {{0, 0, 1}, {0, 1, 2}, {1, 2, 2}};
 
     REQUIRE(CheckGame(game) == VICTORY_X);
+  }
+
+  SECTION("Vitória do jogador O diagonal horária") {
+    GameMatrix game = {{2, 0, 0}, {0, 2, 1}, {1, 1, 2}};
+
+    REQUIRE(CheckGame(game) == VICTORY_O);
+  }
+
+  SECTION("Vitória do jogador O diagonal anti-horário") {
+    GameMatrix game = {{0, 0, 2}, {0, 2, 1}, {2, 1, 1}};
+
+    REQUIRE(CheckGame(game) == VICTORY_O);
   }
 }
