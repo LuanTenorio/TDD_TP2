@@ -76,25 +76,24 @@ Result checkDraw(GameMatrix game) {
   return Result::DRAW;
 }
 
+Result checkImpossible(GameMatrix game) {
+  int len[3] = {0, 0, 0};  // Empty, X, O
+
+  for (int i = 0; i < 3; i++)
+    for (int j = 0; j < 3; j++) len[game[i][j]]++;
+
+  if (abs(len[Fields::FIELD_X] - len[Fields::FIELD_O]) >= 2)
+    return Result::IMPOSSIBLE;
+
+  return Result::INDEFINITE;
+}
+
 Result CheckGame(GameMatrix game) {
-  int lenX = 0, lenO = 0, lenEmpty = 0;
+  Result result = checkImpossible(game);
+  if (result == Result::IMPOSSIBLE) return result;
 
-  for (int i = 0; i < 3; i++) {
-    for (int j = 0; j < 3; j++) {
-      if (game[i][j] == Fields::FIELD_O)
-        lenO++;
-      else if (game[i][j] == Fields::FIELD_X)
-        lenX++;
-      else if (game[i][j] == Fields::Empty)
-        lenEmpty++;
-    }
-  }
-
-  if (abs(lenX - lenO) >= 2) return Result::IMPOSSIBLE;
-
-  if (Result result = checkWin(game);
-      result == Result::VICTORY_O || result == Result::VICTORY_X)
-    return result;
+  result = checkWin(game);
+  if (result == Result::VICTORY_O || result == Result::VICTORY_X) return result;
 
   if (checkDraw(game) == Result::DRAW) return Result::DRAW;
 
