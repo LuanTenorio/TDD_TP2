@@ -88,31 +88,30 @@ Result checkImpossible(GameMatrix game) {
   return Result::INDEFINITE;
 }
 
+bool checkTwoWinners(GameMatrix game, Result firstWinner) {
+  GameMatrix gameX = {};
+  GameMatrix gameO = {};
+
+  for (int i = 0; i < 3; i++)
+    for (int j = 0; j < 3; j++)
+      if (game[i][j] == Fields::FIELD_X)
+        gameX[i][j] = Fields::FIELD_X;
+      else if (game[i][j] == Fields::FIELD_O)
+        gameO[i][j] = Fields::FIELD_O;
+
+  return (firstWinner == Result::VICTORY_X &&
+          checkWin(gameO) == Result::VICTORY_O) ||
+         (firstWinner == Result::VICTORY_O &&
+          checkWin(gameX) == Result::VICTORY_X);
+}
+
 Result CheckGame(GameMatrix game) {
   Result result = checkImpossible(game);
   if (result == Result::IMPOSSIBLE) return result;
 
   result = checkWin(game);
-  if (result == Result::VICTORY_O || result == Result::VICTORY_X) {
-    GameMatrix gameX = {};
-    GameMatrix gameO = {};
-
-    for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 3; j++) {
-        if (game[i][j] == Fields::FIELD_X) {
-          gameX[i][j] = Fields::FIELD_X;
-        } else if (game[i][j] == Fields::FIELD_O) {
-          gameO[i][j] = Fields::FIELD_O;
-        }
-      }
-    }
-
-    if ((result == Result::VICTORY_X && checkWin(gameO) == Result::VICTORY_O) ||
-        (result == Result::VICTORY_O && checkWin(gameX) == Result::VICTORY_X))
-      return Result::IMPOSSIBLE;
-
-    return result;
-  }
+  if (result == Result::VICTORY_O || result == Result::VICTORY_X)
+    return checkTwoWinners(game, result) ? Result::IMPOSSIBLE : result;
 
   if (checkDraw(game) == Result::DRAW) return Result::DRAW;
 
