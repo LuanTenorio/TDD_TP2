@@ -57,3 +57,9 @@ TEST_CASE("Vitória", "[velha]") {
     REQUIRE(CheckGame(game) == VICTORY_O);
   }
 }
+
+TEST_CASE("Empate", "[velha]") {
+  GameMatrix game = {{1, 2, 1}, {2, 1, 1}, {2, 1, 2}};
+
+  REQUIRE(CheckGame(game) == Result::DRAW);
+}

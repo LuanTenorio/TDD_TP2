@@ -63,5 +63,5 @@ int CheckGame(GameMatrix game) {
   result = checkDiagonal(game);
   if (result == Result::VICTORY_O || result == Result::VICTORY_X) return result;
 
-  return 0;
+  return -3;
 }
