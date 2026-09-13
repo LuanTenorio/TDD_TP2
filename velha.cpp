@@ -25,10 +25,14 @@ Result checkRow(GameMatrix game) {
 }
 
 Result checkDiagonal(GameMatrix game) {
-  if (game[0][0] == Fields::FIELD_X && game[1][1] == Fields::FIELD_X &&
-      game[2][2] == Fields::FIELD_X) {
+  if ((game[0][0] == Fields::FIELD_X && game[1][1] == Fields::FIELD_X &&
+       game[2][2] == Fields::FIELD_X) ||
+      (game[0][2] == Fields::FIELD_X && game[1][1] == Fields::FIELD_X &&
+       game[2][0] == Fields::FIELD_X)) {
     return Result::VICTORY_X;
   }
+
+  return Result::INDEFINITE;
 }
 
 int CheckGame(GameMatrix game) {
