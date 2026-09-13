@@ -32,4 +32,10 @@ TEST_CASE("Vitória", "[velha]") {
 
     REQUIRE(CheckGame(game) == VICTORY_O);
   }
+
+  SECTION("Vitória do jogador X diagonal horária") {
+    GameMatrix game = {{1, 0, 0}, {0, 1, 2}, {2, 2, 1}};
+
+    REQUIRE(CheckGame(game) == VICTORY_X);
+  }
 }
