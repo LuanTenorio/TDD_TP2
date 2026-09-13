@@ -20,4 +20,10 @@ TEST_CASE("Vitória", "[velha]") {
 
     REQUIRE(VerificaVelha(game) == VICTORY_O);
   }
+
+  SECTION("Vitória do jogador X linha") {
+    int game[3][3] = {{1, 1, 1}, {0, 0, 2}, {0, 2, 2}};
+
+    REQUIRE(VerificaVelha(game) == VICTORY_X);
+  }
 }
