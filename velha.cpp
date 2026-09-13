@@ -48,22 +48,26 @@ Result checkRightDiagonal(GameMatrix game) {
   return static_cast<Result>(player);
 }
 
+bool checkIfResultIsWin(Result result) {
+  return result == Result::VICTORY_O || result == Result::VICTORY_X;
+}
+
 Result checkDiagonal(GameMatrix game) {
   Result result = checkLeftDiagonal(game);
-  if (result == Result::VICTORY_O || result == Result::VICTORY_X) return result;
+  if (checkIfResultIsWin(result)) return result;
 
   return checkRightDiagonal(game);
 }
 
 Result checkWin(GameMatrix game) {
   Result result = checkCollumn(game);
-  if (result == Result::VICTORY_O || result == Result::VICTORY_X) return result;
+  if (checkIfResultIsWin(result)) return result;
 
   result = checkRow(game);
-  if (result == Result::VICTORY_O || result == Result::VICTORY_X) return result;
+  if (checkIfResultIsWin(result)) return result;
 
   result = checkDiagonal(game);
-  if (result == Result::VICTORY_O || result == Result::VICTORY_X) return result;
+  if (checkIfResultIsWin(result)) return result;
 
   return Result::INDEFINITE;
 }
@@ -106,7 +110,7 @@ Result CheckGame(GameMatrix game) {
   if (checkImpossible(game)) return Result::IMPOSSIBLE;
 
   Result result = checkWin(game);
-  if (result == Result::VICTORY_O || result == Result::VICTORY_X)
+  if (checkIfResultIsWin(result))
     return checkTwoWinners(game, result) ? Result::IMPOSSIBLE : result;
 
   if (checkDraw(game)) return Result::DRAW;
