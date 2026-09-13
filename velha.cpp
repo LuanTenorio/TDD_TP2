@@ -1,35 +1,35 @@
-#include <iostream>
-/**
- * \file  velha.cpp
- */
-
 #include "velha.hpp"
 
-/**
- * @brief verifica situacao do jogo da velha
- * @author Programador
- * @param  velha descreve o parametro
- *
- *  Descrever o que a funcao faz
- */
+Result checkCollumn(GameMatrix game) {
+  int player;
+  for (int collumn = 0; collumn < 3; ++collumn) {
+    player = game[0][collumn];
 
-int VerificaVelha(int velha[3][3]) {
-  int playerCol, playerRow;
-  for (int i = 0; i < 3; ++i) {
-    int collumn = i;
-    playerCol = velha[0][collumn];
-
-    if (playerCol != 0 && velha[1][collumn] == playerCol &&
-        velha[2][collumn] == playerCol)
-      return playerCol;
-
-    int row = i;
-    playerRow = velha[row][0];
-
-    if (playerRow != 0 && velha[row][1] == playerRow &&
-        velha[row][2] == playerRow)
-      return playerRow;
+    if (player != 0 && game[1][collumn] == player && game[2][collumn] == player)
+      return static_cast<Result>(player);
   }
+
+  return Result::INDEFINITE;
+}
+
+Result checkRow(GameMatrix game) {
+  int player;
+  for (int row = 0; row < 3; ++row) {
+    player = game[0][row];
+
+    if (player != 0 && game[row][1] == player && game[row][2] == player)
+      return static_cast<Result>(player);
+  }
+
+  return Result::INDEFINITE;
+}
+
+int CheckGame(GameMatrix game) {
+  Result result = checkCollumn(game);
+  if (result == Result::VICTORY_O || result == Result::VICTORY_X) return result;
+
+  result = checkRow(game);
+  if (result == Result::VICTORY_O || result == Result::VICTORY_X) return result;
 
   return 0;
 }

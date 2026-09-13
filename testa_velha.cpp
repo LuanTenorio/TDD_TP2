@@ -10,26 +10,26 @@
 
 TEST_CASE("Vitória", "[velha]") {
   SECTION("Vitória do jogador X coluna") {
-    int game[3][3] = {{2, 0, 1}, {2, 0, 1}, {0, 2, 1}};
+    GameMatrix game = {{2, 0, 1}, {2, 0, 1}, {0, 2, 1}};
 
-    REQUIRE(VerificaVelha(game) == VICTORY_X);
+    REQUIRE(CheckGame(game) == VICTORY_X);
   }
 
   SECTION("Vitória do jogador O coluna") {
-    int game[3][3] = {{2, 0, 1}, {2, 0, 1}, {2, 1, 0}};
+    GameMatrix game = {{2, 0, 1}, {2, 0, 1}, {2, 1, 0}};
 
-    REQUIRE(VerificaVelha(game) == VICTORY_O);
+    REQUIRE(CheckGame(game) == VICTORY_O);
   }
 
   SECTION("Vitória do jogador X linha") {
-    int game[3][3] = {{1, 1, 1}, {0, 0, 2}, {0, 2, 2}};
+    GameMatrix game = {{1, 1, 1}, {0, 0, 2}, {0, 2, 2}};
 
-    REQUIRE(VerificaVelha(game) == VICTORY_X);
+    REQUIRE(CheckGame(game) == VICTORY_X);
   }
 
   SECTION("Vitória do jogador O linha") {
-    int game[3][3] = {{2, 2, 2}, {0, 0, 1}, {0, 1, 1}};
+    GameMatrix game = {{2, 2, 2}, {0, 0, 1}, {0, 1, 1}};
 
-    REQUIRE(VerificaVelha(game) == VICTORY_O);
+    REQUIRE(CheckGame(game) == VICTORY_O);
   }
 }

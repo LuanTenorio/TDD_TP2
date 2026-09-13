@@ -10,6 +10,10 @@ enum Result {
   INDEFINITE = -2
 };
 
-int VerificaVelha(int velha[3][3]);
+enum Fields { FIELD_O = 2, FIELD_X = 1, Empty = 0 };
+
+using GameMatrix = int[3][3];
+
+int CheckGame(int velha[3][3]);
 
 #endif  // VELHA_HPP_
