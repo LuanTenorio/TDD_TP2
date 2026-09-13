@@ -14,17 +14,21 @@
  */
 
 int VerificaVelha(int velha[3][3]) {
-  for (int collumn = 0; collumn < 3; ++collumn) {
-    int player = velha[0][collumn];
+  int playerCol, playerRow;
+  for (int i = 0; i < 3; ++i) {
+    int collumn = i;
+    playerCol = velha[0][collumn];
 
-    if (player != 0 && velha[1][collumn] == player &&
-        velha[2][collumn] == player)
-      return player;
-  }
+    if (playerCol != 0 && velha[1][collumn] == playerCol &&
+        velha[2][collumn] == playerCol)
+      return playerCol;
 
-  for (int i = 0; i < 3; i++) {
-    if (velha[i][0] == 1 && velha[i][1] == 1 && velha[i][2] == 1) return 1;
-    if (velha[i][0] == 2 && velha[i][1] == 2 && velha[i][2] == 2) return 2;
+    int row = i;
+    playerRow = velha[row][0];
+
+    if (playerRow != 0 && velha[row][1] == playerRow &&
+        velha[row][2] == playerRow)
+      return playerRow;
   }
 
   return 0;
